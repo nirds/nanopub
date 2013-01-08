@@ -1,55 +1,29 @@
 require 'sinatra'
+require 'sass'
 require 'yaml'
+require 'hashie'
 
-before do
-  headers "Content-Type" => "text/html; charset=utf-8"
+set :views, :sass => 'views/sass', :haml => 'views', :default => 'views'
+
+helpers do # http://www.sinatrarb.com/intro#Looking%20Up%20Template%20Files
+  def find_template(views, name, engine, &block)
+    _, folder = views.detect { |k,v| engine == Tilt[k] }
+    folder ||= views[:default]
+    super(folder, name, engine, &block)
+  end
+end
+
+get '/styles.css' do
+  content_type 'text/css', :charset => 'utf-8'
+  sass :styles
 end
 
 get '/' do
-  # TODO make this HAML
-  @title  = "hello"
-  @beers = YAML.load_file('data/beer.yml')
+  @title = "hello"
+  @beers = Hashie::Mash.new(YAML.load_file('data/beer.yml'))
   haml :index
 end
 
 get '/*' do
   redirect to('/')
 end
-__END__
-
-
-# TODO put layout in its own file
-@@ layout
-%html
-  %head
-    %title
-      = @title
-    %style
-      :sass
-        /* TODO put styles in Sass-y stylesheet. */
-        body
-          background-color: #FAFAFA
-          margin:           38px
-        p
-          padding:          0
-          margin:           0
-          font-family:      Helvetica, Arial, "Lucida Grande", sans-serif
-        a
-          color:            #33C
-          text-decoration:  none
-          &:visited
-            color:          #339
-  %body
-    = yield
-
-@@ index
-
-%p= @beers
-
--@beers.each do |beer|
-  %h2= beer[1][:name]
-  %p=  beer[1][:description]
-  %p= beer
-
-%p below is the output of @beers[:stout][:description]
-= @beers[:stout][:description]

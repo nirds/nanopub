@@ -1,0 +1,5 @@
+%section.beers
+-@beers.each_value do |beer|
+  %div.beer{:id => beer.name}
+    %h1= beer.name
+    %p=  beer.description

@@ -1,0 +1,16 @@
+stout:
+  name: "Stout"
+  description: "Chocolaty and dark"
+ipa:
+  name: "India Pale Ale"
+  description: "Hoppy and bright"
+amber:
+  name: "Amber"
+  description: "Balanced beer with an amber color"
+lambic:
+  name: "Lambic"
+  description: "Fruity"
+saison:
+  name: "Saison"
+  description: "A complex farmhouse ale"
+

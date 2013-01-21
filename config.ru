@@ -9,8 +9,8 @@ use Rack::ConditionalGet
 use Rack::ETag
 
 require 'nesta/env'
-Nesta::Env.root = ::File.expand_path('./blog', ::File.dirname(__FILE__))
+Nesta::Env.root = ::File.expand_path('./', ::File.dirname(__FILE__))
 
 require 'nesta/app'
 
-run Rack::URLMap.new("/" => Sinatra::Application, "/blog" => Nesta::App )
+run Rack::URLMap.new("/" => Sinatra::Application, "/blog" => Nesta::App)
